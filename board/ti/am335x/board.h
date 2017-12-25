@@ -49,6 +49,11 @@ static inline int board_is_evm_sk(void)
 	return board_ti_is("A335X_SK");
 }
 
+static inline int board_is_fml80(void)
+{
+	return true;
+}
+
 static inline int board_is_idk(void)
 {
 	return !strncmp(board_ti_get_config(), "SKU#02", 6);

@@ -342,6 +342,7 @@ void enable_board_pin_mux(void)
 {
 	/* Do board-specific muxes. */
 	if (board_is_bone()) {
+		puts("Board is bone!\n");
 		/* Beaglebone pinmux */
 		configure_module_pin_mux(mii1_pin_mux);
 		configure_module_pin_mux(mmc0_pin_mux);
@@ -353,6 +354,7 @@ void enable_board_pin_mux(void)
 		configure_module_pin_mux(mmc1_pin_mux);
 #endif
 	} else if (board_is_gp_evm()) {
+		puts("Board is GP EVM!\n");
 		/* General Purpose EVM */
 		unsigned short profile = detect_daughter_board_profile();
 		configure_module_pin_mux(rgmii1_pin_mux);
@@ -370,16 +372,19 @@ void enable_board_pin_mux(void)
 			configure_module_pin_mux(spi0_pin_mux);
 		}
 	} else if (board_is_idk()) {
+		puts("Board is IDK!\n");
 		/* Industrial Motor Control (IDK) */
 		configure_module_pin_mux(mii1_pin_mux);
 		configure_module_pin_mux(mmc0_no_cd_pin_mux);
 	} else if (board_is_evm_sk()) {
+		puts("Board is EVM SK!\n");
 		/* Starter Kit EVM */
 		configure_module_pin_mux(i2c1_pin_mux);
 		configure_module_pin_mux(gpio0_7_pin_mux);
 		configure_module_pin_mux(rgmii1_pin_mux);
 		configure_module_pin_mux(mmc0_pin_mux_sk_evm);
 	} else if (board_is_bone_lt()) {
+		puts("Board is Bone LT!\n");
 		/* Beaglebone LT pinmux */
 		configure_module_pin_mux(mii1_pin_mux);
 		configure_module_pin_mux(mmc0_pin_mux);
@@ -391,11 +396,19 @@ void enable_board_pin_mux(void)
 		configure_module_pin_mux(mmc1_pin_mux);
 #endif
 	} else if (board_is_icev2()) {
+		puts("Board is ICE v2!\n");
 		configure_module_pin_mux(mmc0_pin_mux);
 		configure_module_pin_mux(gpio0_18_pin_mux);
 		configure_module_pin_mux(uart3_icev2_pin_mux);
 		configure_module_pin_mux(rmii1_pin_mux);
 		configure_module_pin_mux(spi0_pin_mux);
+	} else if (board_is_fml80()) {
+		puts("Board is FML80!\n");
+		/* Starter FutureTek FML80 */
+		configure_module_pin_mux(i2c1_pin_mux);
+		configure_module_pin_mux(gpio0_7_pin_mux);
+		configure_module_pin_mux(rgmii1_pin_mux);
+		configure_module_pin_mux(mmc0_pin_mux_sk_evm);
 	} else {
 		/* Unknown board. We might still be able to boot. */
 		puts("Bad EEPROM or unknown board, cannot configure pinmux.");
