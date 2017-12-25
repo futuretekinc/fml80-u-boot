@@ -241,6 +241,7 @@ static int rtl8211e_startup(struct phy_device *phydev)
 {
 	int ret;
 
+	printf("###################### RTL8211E StartUp\n");
 	ret = genphy_update_link(phydev);
 	if (ret)
 		return ret;
@@ -308,6 +309,7 @@ static struct phy_driver RTL8211F_driver = {
 
 int phy_realtek_init(void)
 {
+	puts("###################### phy_realtek_init\n");
 	phy_register(&RTL8211B_driver);
 	phy_register(&RTL8211E_driver);
 	phy_register(&RTL8211F_driver);

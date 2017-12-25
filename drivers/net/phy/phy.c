@@ -679,6 +679,7 @@ int __weak get_phy_id(struct mii_dev *bus, int addr, int devad, u32 *phy_id)
 
 	*phy_id |= (phy_reg & 0xffff);
 
+	printf("get_phy_id (%s, %d, %d) = %08x\n", bus->name, addr, devad, *phy_id);
 	return 0;
 }
 

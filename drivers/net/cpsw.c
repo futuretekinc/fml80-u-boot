@@ -802,6 +802,8 @@ static int _cpsw_init(struct cpsw_priv *priv, u8 *enetaddr)
 	struct cpsw_slave	*slave;
 	int i, ret;
 
+	printf("########### %s[%d] ############\n", __func__, __LINE__);
+	
 	/* soft reset the controller and initialize priv */
 	setbit_and_wait_for_clear32(&priv->regs->soft_reset);
 
@@ -809,6 +811,7 @@ static int _cpsw_init(struct cpsw_priv *priv, u8 *enetaddr)
 	cpsw_ale_enable(priv, 1);
 	cpsw_ale_clear(priv, 1);
 	cpsw_ale_vlan_aware(priv, 0); /* vlan unaware mode */
+
 
 	/* setup host port priority mapping */
 	__raw_writel(0x76543210, &priv->host_port_regs->cpdma_tx_pri_map);
@@ -1113,6 +1116,7 @@ int cpsw_register(struct cpsw_platform_data *data)
 #else
 static int cpsw_eth_start(struct udevice *dev)
 {
+	printf("########### %s[%d] ############\n", __func__, __LINE__);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct cpsw_priv *priv = dev_get_priv(dev);
 
@@ -1204,6 +1208,7 @@ static void cpsw_gmii_sel_am3352(struct cpsw_priv *priv,
 		break;
 	};
 
+	printf("CPSW PHY MODE : %d\n", mode);
 	mask = GMII_SEL_MODE_MASK << (slave * 2) | BIT(slave + 6);
 	mode <<= slave * 2;
 
@@ -1255,6 +1260,7 @@ static void cpsw_gmii_sel_dra7xx(struct cpsw_priv *priv,
 		break;
 	};
 
+	printf("CPSW PHY MODE : %d\n", mode);
 	switch (slave) {
 	case 0:
 		mask = GMII_SEL_MODE_MASK;
@@ -1280,6 +1286,7 @@ static void cpsw_gmii_sel_dra7xx(struct cpsw_priv *priv,
 static void cpsw_phy_sel(struct cpsw_priv *priv, const char *compat,
 			 phy_interface_t phy_mode)
 {
+	printf("############ cpsw_phy_sel(%s)\n", compat);
 	if (!strcmp(compat, "ti,am3352-cpsw-phy-sel"))
 		cpsw_gmii_sel_am3352(priv, phy_mode);
 	if (!strcmp(compat, "ti,am43xx-cpsw-phy-sel"))

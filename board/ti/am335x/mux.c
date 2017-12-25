@@ -402,13 +402,6 @@ void enable_board_pin_mux(void)
 		configure_module_pin_mux(uart3_icev2_pin_mux);
 		configure_module_pin_mux(rmii1_pin_mux);
 		configure_module_pin_mux(spi0_pin_mux);
-	} else if (board_is_fml80()) {
-		puts("Board is FML80!\n");
-		/* Starter FutureTek FML80 */
-		configure_module_pin_mux(i2c1_pin_mux);
-		configure_module_pin_mux(gpio0_7_pin_mux);
-		configure_module_pin_mux(rgmii1_pin_mux);
-		configure_module_pin_mux(mmc0_pin_mux_sk_evm);
 	} else {
 		/* Unknown board. We might still be able to boot. */
 		puts("Bad EEPROM or unknown board, cannot configure pinmux.");

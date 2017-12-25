@@ -18,89 +18,20 @@
 /* Definition to control the GPIOs (for LEDs and Reset) */
 #define GPIO_TO_PIN(bank, gpio) (32 * (bank) + (gpio))
 
-static inline int board_is_b_sample(void)
+static inline int board_is_fml80(void)
 {
-#if defined CONFIG_B_SAMPLE
 	return 1;
-#else
-	return 0;
-#endif
-}
-
-static inline int board_is_c_sample(void)
-{
-#if defined CONFIG_C_SAMPLE
-	return 1;
-#else
-	return 0;
-#endif
-}
-
-static inline int board_is_c3_sample(void)
-{
-#if defined CONFIG_C3_SAMPLE
-	return 1;
-#else
-	return 0;
-#endif
-}
-
-static inline int board_is_series(void)
-{
-#if defined CONFIG_SERIES
-	return 1;
-#else
-	return 0;
-#endif
 }
 
 /*
  * Definitions for pinmuxing header and Board ID strings
  */
-#if defined CONFIG_B_SAMPLE
-# define BOARD_ID_STR "SHC B-Sample\n"
-#elif defined CONFIG_B2_SAMPLE
-# define BOARD_ID_STR "SHC B2-Sample\n"
-#elif defined CONFIG_C_SAMPLE
-# if defined(CONFIG_SHC_NETBOOT)
-#  define BOARD_ID_STR "#### NETBOOT ####\nSHC C-Sample\n"
-# elif defined(CONFIG_SHC_SDBOOT)
-#  define BOARD_ID_STR "#### SDBOOT ####\nSHC C-Sample\n"
-# else
-#  define BOARD_ID_STR "SHC C-Sample\n"
-# endif
-#elif defined CONFIG_C2_SAMPLE
-# if defined(CONFIG_SHC_ICT)
-#  define BOARD_ID_STR "#### ICT ####\nSHC C2-Sample\n"
-# elif defined(CONFIG_SHC_NETBOOT)
-#  define BOARD_ID_STR "#### NETBOOT ####\nSHC C2-Sample\n"
-# elif defined(CONFIG_SHC_SDBOOT)
-#  define BOARD_ID_STR "#### SDBOOT ####\nSHC C2-Sample\n"
-# else
-#  define BOARD_ID_STR "SHC C2-Sample\n"
-# endif
-#elif defined CONFIG_C3_SAMPLE
-# if defined(CONFIG_SHC_ICT)
-#  define BOARD_ID_STR "#### ICT ####\nSHC C3-Sample\n"
-# elif defined(CONFIG_SHC_NETBOOT)
-#  define BOARD_ID_STR "#### NETBOOT ####\nSHC C3-Sample\n"
-# elif defined(CONFIG_SHC_SDBOOT)
-#  define BOARD_ID_STR "#### SDBOOT ####\nSHC C3-Sample\n"
-# else
-#  define BOARD_ID_STR "SHC C3-Sample\n"
-# endif
-#elif defined CONFIG_SERIES
-# if defined(CONFIG_SHC_ICT)
-#  define BOARD_ID_STR "#### ICT ####\nSHC\n"
-# elif defined(CONFIG_SHC_NETBOOT)
-#  define BOARD_ID_STR "#### NETBOOT ####\nSHC\n"
-# elif defined(CONFIG_SHC_SDBOOT)
-#  define BOARD_ID_STR "#### SDBOOT ####\nSHC\n"
-# else
-#  define BOARD_ID_STR "SHC\n"
-# endif
+#if defined(CONFIG_SHC_NETBOOT)
+# define BOARD_ID_STR "#### NETBOOT ####\nSHC C-Sample\n"
+#elif defined(CONFIG_SHC_SDBOOT)
+# define BOARD_ID_STR "#### SDBOOT ####\nSHC C-Sample\n"
 #else
-# define BOARD_ID_STR "Unknown device!\n"
+# define BOARD_ID_STR "SHC C-Sample\n"
 #endif
 
 /*
