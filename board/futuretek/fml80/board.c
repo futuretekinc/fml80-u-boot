@@ -552,8 +552,8 @@ int board_eth_init(bd_t *bis)
 			eth_env_set_enetaddr("ethaddr", mac_addr);
 	}
 
-	writel(MII_MODE_ENABLE, &cdev->miisel);
-	cpsw_slaves[0].phy_if =	PHY_INTERFACE_MODE_MII;
+	writel(RGMII_MODE_ENABLE, &cdev->miisel);
+	cpsw_slaves[0].phy_if =	PHY_INTERFACE_MODE_RGMII;
 	cpsw_slaves[1].phy_if = cpsw_slaves[0].phy_if;
 	rv = cpsw_register(&cpsw_data);
 	if (rv < 0)
