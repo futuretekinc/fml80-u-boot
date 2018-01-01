@@ -13,74 +13,50 @@ config SYS_CONFIG_NAME
 	default "am335x_fml80"
 
 choice
-	prompt "enable different boot versions for the shc board"
-	default EMMC
+	prompt "enable different boot versions for the FML80 board"
+	default SDBOOT
 	help
-	  Select the boot version of the shc board.
+	  Select the boot version of the FML80 board.
 
-config SHC_EMMC
+config FML80_EMMC
 	bool "enable eMMC"
 	help
-	  enable here the eMMC functionality on the bosch shc board.
+	  enable here the eMMC functionality on the bosch FML80 board.
 
-config SHC_ICT
+config FML80_ICT
 	bool "enable ICT"
 	help
-	  enable here the ICT functionality on the bosch shc board
+	  enable here the ICT functionality on the bosch FML80 board
 
-config SHC_NETBOOT
+config FML80_NETBOOT
 	bool "enable NETBOOT"
 	help
-	  enable here the NETBOOT functionality on the bosch shc board
+	  enable here the NETBOOT functionality on the bosch FML80 board
 
-config SHC_SDBOOT
+config FML80_SDBOOT
 	bool "enable SDBOOT"
 	help
-	  enable here the SDBOOT functionality on the bosch shc board
+	  enable here the SDBOOT functionality on the bosch FML80 board
 
 endchoice
 
 choice
-	prompt "enable different board versions for the shc board"
-	default C3_SAMPLE
+	prompt "enable different board versions for the FML80 board"
+	default A0
 	help
-	  Select the board version of the shc board.
+	  Select the board version of the FML80 board.
 
-config B_SAMPLE
-	bool "B Sample board version"
+config FML80_A0
+	bool "A0 Sample board version"
 	help
-	  activate, if you want to build for the B sample version
-	  of the bosch shc board
+	  activate, if you want to build for the A0 sample version
+	  of the bosch FML80 board
 
-config B2_SAMPLE
-	bool "B2 Sample board version"
-	help
-	  activate, if you want to build for the B2 sample version
-	  of the bosch shc board
-
-config C_SAMPLE
-	bool "C Sample board version"
-	help
-	  activate, if you want to build for the C sample version
-	  of the bosch shc board
-
-config C2_SAMPLE
-	bool "C2 Sample board version"
-	help
-	  activate, if you want to build for the C2 sample version
-	  of the bosch shc board
-
-config C3_SAMPLE
-	bool "C3 Sample board version"
-	help
-	  activate, if you want to build for the C3 sample version
-	  of the bosch shc board
-
-config SERIES
+config FML80_SERIES
 	bool "Series board version"
 	help
 	  activate, if you want to build for the Series version
-	  of the bosch shc board
+	  of the bosch FML80 board
 
 endchoice
 

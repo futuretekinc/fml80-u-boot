@@ -531,8 +531,10 @@ static int cpsw_mdio_read(struct mii_dev *bus, int phy_id,
 	u32 reg;
 
 	if (phy_reg & ~PHY_REG_MASK || phy_id & ~PHY_ID_MASK)
+	{
+		printf("%s[%d] : phy_reg = %02x, PHY_REG_MASK = %02x, phy_id = %02x, PHY_ID_MASK = %02x\n", __func__, __LINE__, phy_reg, PHY_REG_MASK, phy_id, PHY_ID_MASK);
 		return -EINVAL;
-
+	}
 	wait_for_user_access();
 	reg = (USERACCESS_GO | USERACCESS_READ | (phy_reg << 21) |
 	       (phy_id << 16));
@@ -540,6 +542,7 @@ static int cpsw_mdio_read(struct mii_dev *bus, int phy_id,
 	reg = wait_for_user_access();
 
 	data = (reg & USERACCESS_ACK) ? (reg & USERACCESS_DATA) : -1;
+	printf("%s[%d] : %d\n", __func__, __LINE__, data);
 	return data;
 }
 
@@ -802,8 +805,6 @@ static int _cpsw_init(struct cpsw_priv *priv, u8 *enetaddr)
 	struct cpsw_slave	*slave;
 	int i, ret;
 
-	printf("########### %s[%d] ############\n", __func__, __LINE__);
-	
 	/* soft reset the controller and initialize priv */
 	setbit_and_wait_for_clear32(&priv->regs->soft_reset);
 
@@ -956,7 +957,9 @@ static int _cpsw_recv(struct cpsw_priv *priv, uchar **pkt)
 
 	ret = cpdma_process(priv, &priv->rx_chan, &buffer, &len);
 	if (ret < 0)
+	{
 		return ret;
+	}
 
 	invalidate_dcache_range((unsigned long)buffer,
 				(unsigned long)buffer + PKTSIZE_ALIGN);
@@ -1116,7 +1119,6 @@ int cpsw_register(struct cpsw_platform_data *data)
 #else
 static int cpsw_eth_start(struct udevice *dev)
 {
-	printf("########### %s[%d] ############\n", __func__, __LINE__);
 	struct eth_pdata *pdata = dev_get_platdata(dev);
 	struct cpsw_priv *priv = dev_get_priv(dev);
 
@@ -1286,7 +1288,6 @@ static void cpsw_gmii_sel_dra7xx(struct cpsw_priv *priv,
 static void cpsw_phy_sel(struct cpsw_priv *priv, const char *compat,
 			 phy_interface_t phy_mode)
 {
-	printf("############ cpsw_phy_sel(%s)\n", compat);
 	if (!strcmp(compat, "ti,am3352-cpsw-phy-sel"))
 		cpsw_gmii_sel_am3352(priv, phy_mode);
 	if (!strcmp(compat, "ti,am43xx-cpsw-phy-sel"))

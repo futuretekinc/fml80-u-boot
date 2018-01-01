@@ -68,11 +68,6 @@ static struct module_pin_mux i2c0_pin_mux[] = {
 	{-1},
 };
 
-static struct module_pin_mux gpio0_7_pin_mux[] = {
-	{OFFSET(ecap0_in_pwm0_out), (MODE(7) | PULLUP_EN)},	/* GPIO0_7 */
-	{-1},
-};
-
 static struct module_pin_mux jtag_pin_mux[] = {
 	{OFFSET(xdma_event_intr0), (MODE(6) | RXACTIVE | PULLUDDIS)},
 	{OFFSET(xdma_event_intr1), (MODE(6) | RXACTIVE | PULLUDDIS)},
@@ -96,65 +91,23 @@ static struct module_pin_mux jtag_pin_mux[] = {
 };
 
 static struct module_pin_mux gpio_pin_mux[] = {
-	{OFFSET(gpmc_ad8), (MODE(7) | PULLUDDIS)},	/* gpio0[22] - LED_PWR_BL (external pull-down) */
-	{OFFSET(gpmc_ad9), (MODE(7) | PULLUDDIS)},	/* gpio0[23] - LED_PWR_RD (external pull-down) */
-	{OFFSET(gpmc_ad10), (MODE(7) | PULLUDDIS)},	/* gpio0[26] - LED_LAN_RD (external pull-down) */
-	{OFFSET(gpmc_ad11), (MODE(7) | PULLUDDIS)},	/* gpio0[27] - #WIFI_RST (external pull-down) */
-	{OFFSET(gpmc_a0), (MODE(7) | PULLUDDIS)},	/* gpio1[16] - WIFI_REGEN */
-	{OFFSET(gpmc_a1), (MODE(7) | PULLUDDIS)},	/* gpio1[17] - LED_LAN_BL */
-	{OFFSET(gpmc_a2), (MODE(7) | PULLUDDIS)},	/* gpio1[18] - LED_Cloud_BL */
-	{OFFSET(gpmc_a3), (MODE(7) | PULLUDDIS)},	/* gpio1[19] -  LED_PWM as GPIO */
-	{OFFSET(gpmc_a4), (MODE(7))},			/* gpio1[20] -  #eMMC_RST */
-	{OFFSET(gpmc_a5), (MODE(7) | PULLUDDIS)},	/* gpio1[21] -  #Z-Wave_RST */
-	{OFFSET(gpmc_a6), (MODE(7) | PULLUDDIS)},	/* gpio1[22] -  ENOC_RST */
-	{OFFSET(gpmc_a7), (MODE(7) | PULLUP_EN)},	/* gpio1[23] -  WIFI_MODE */
-	{OFFSET(gpmc_a8), (MODE(7) | RXACTIVE | PULLUDDIS)},	/* gpio1[24] -  #BIDCOS_RST */
-	{OFFSET(gpmc_a9), (MODE(7) | RXACTIVE | PULLUDDIS)},	/* gpio1[25] -  USR_BUTTON */
-	{OFFSET(gpmc_a10), (MODE(7) | RXACTIVE | PULLUDDIS)},	/* gpio1[26] -  #USB1_OC */
-	{OFFSET(gpmc_a11), (MODE(7) | RXACTIVE | PULLUDDIS)},	/* gpio1[27] -  BIDCOS_PROG */
-	{OFFSET(gpmc_be1n), (MODE(7) | PULLUP_EN)},	/* gpio1[28] -  ZIGBEE_PC7 */
-	{OFFSET(gpmc_csn0), (MODE(7) | RXACTIVE | PULLUDDIS)},	/* gpio1[29] -  RESET_BUTTON */
-	{OFFSET(gpmc_advn_ale), (MODE(7) | PULLUDDIS)},	/* gpio2[2] -  LED_Cloud_RD */
-	{OFFSET(gpmc_oen_ren), (MODE(7) | PULLUDDIS | RXACTIVE)}, /* gpio2[3] -  #WIFI_POR */
-	{OFFSET(gpmc_wen), (MODE(7) | PULLUDDIS)},	/* gpio2[4] -  N/C */
-	{OFFSET(gpmc_be0n_cle), (MODE(7) | PULLUDDIS)},	/* gpio2[5] -  EEPROM_WP */
-	{OFFSET(lcd_data0), (MODE(7) | PULLUDDIS)},	/* gpio2[6] */
-	{OFFSET(lcd_data1), (MODE(7) | PULLUDDIS)},	/* gpio2[7] */
-	{OFFSET(lcd_data2), (MODE(7) | PULLUDDIS)},	/* gpio2[8] */
-	{OFFSET(lcd_data3), (MODE(7) | PULLUDDIS)},	/* gpio2[9] */
-	{OFFSET(lcd_data4), (MODE(7) | PULLUDDIS)},	/* gpio2[10] */
-	{OFFSET(lcd_data5), (MODE(7) | PULLUDDIS)},	/* gpio2[11] */
-	{OFFSET(lcd_data6), (MODE(7) | PULLUDDIS)},	/* gpio2[12] */
-	{OFFSET(lcd_data7), (MODE(7) | PULLUDDIS)},	/* gpio2[13] */
-	{OFFSET(lcd_data8), (MODE(7) | PULLUDDIS)},	/* gpio2[14] */
-	{OFFSET(lcd_data9), (MODE(7) | PULLUDDIS)},	/* gpio2[15] */
-	{OFFSET(lcd_data10), (MODE(7) | PULLUDDIS)},	/* gpio2[16] */
-	{OFFSET(lcd_data11), (MODE(7) | PULLUDDIS)},	/* gpio2[17] */
-	{OFFSET(lcd_data12), (MODE(7) | PULLUDDIS)},	/* gpio0[8] */
-	{OFFSET(lcd_data13), (MODE(7) | PULLUDDIS)},	/* gpio0[9] */
-	{OFFSET(lcd_data14), (MODE(7) | PULLUDDIS)},	/* gpio0[10] */
-	{OFFSET(lcd_data15), (MODE(7) | PULLUDDIS)},	/* gpio0[11] */
-	{OFFSET(lcd_vsync), (MODE(7) | PULLUDDIS)},	/* gpio2[22] */
-	{OFFSET(lcd_hsync), (MODE(7) | PULLUDDIS)},	/* gpio2[23] */
-	{OFFSET(lcd_pclk), (MODE(7) | PULLUDDIS)},	/* gpio2[24] */
-	{OFFSET(lcd_ac_bias_en), (MODE(7) | PULLUDDIS)},/* gpio2[25] */
-	{OFFSET(spi0_d1), (MODE(7) | PULLUDDIS)},	/* gpio0[4] */
-	{OFFSET(spi0_cs0), (MODE(7) | PULLUDDIS)},	/* gpio0[5] */
-	{OFFSET(mcasp0_aclkr), (MODE(7) | PULLUDDIS)},	/* gpio3[18] - #ZIGBEE_RST */
-	{OFFSET(mcasp0_fsr), (MODE(7)) | PULLUDDIS},	/* gpio3[19] - ZIGBEE_BOOT */
-	{OFFSET(mcasp0_axr1), (MODE(7) | RXACTIVE)},	/* gpio3[19] - ZIGBEE_BOOT */
-	{OFFSET(mcasp0_ahclkx), (MODE(7) | RXACTIVE | PULLUP_EN)},/* gpio3[21] - ZIGBEE_PC5 */
+	{OFFSET(uart0_ctsn),(MODE(7) | PULLUDDIS)},			/* gpio1[8] */ /* USER_LED2 */
+	{OFFSET(ecap0_in_pwm0_out), (MODE(7) | PULLUP_EN)},	/* gpio0[7] */ /* USER_LED3 */
+	{OFFSET(spi0_d1), 	(MODE(7) | PULLUDDIS)},	/* gpio0[4] */ /* LTE1_STATE_0 */
+	{OFFSET(spi0_cs0), 	(MODE(7) | PULLUDDIS)},	/* gpio0[5] */ /* LTE1_STATE_1 */
+	{OFFSET(uart1_rtsn),(MODE(7) | PULLUDDIS)},	/* gpio0[13] */ /* LTE_RESET */
+	{OFFSET(uart1_ctsn),(MODE(7) | PULLUDDIS)},	/* gpio0[12] */ /* W_DISABLE_N */
 	{-1},
 };
 
 static struct module_pin_mux rgmii1_pin_mux[] = {
-	{OFFSET(mii1_txen), MODE(2)},			/* RGMII1_TCTL */
+	{OFFSET(mii1_txen), MODE(2)},				/* RGMII1_TCTL */
 	{OFFSET(mii1_rxdv), MODE(2) | RXACTIVE},	/* RGMII1_RCTL */
-	{OFFSET(mii1_txd3), MODE(2)},			/* RGMII1_TD3 */
-	{OFFSET(mii1_txd2), MODE(2)},			/* RGMII1_TD2 */
-	{OFFSET(mii1_txd1), MODE(2)},			/* RGMII1_TD1 */
-	{OFFSET(mii1_txd0), MODE(2)},			/* RGMII1_TD0 */
-	{OFFSET(mii1_txclk), MODE(2)},			/* RGMII1_TCLK */
+	{OFFSET(mii1_txd3), MODE(2)},				/* RGMII1_TD3 */
+	{OFFSET(mii1_txd2), MODE(2)},				/* RGMII1_TD2 */
+	{OFFSET(mii1_txd1), MODE(2)},				/* RGMII1_TD1 */
+	{OFFSET(mii1_txd0), MODE(2)},				/* RGMII1_TD0 */
+	{OFFSET(mii1_txclk), MODE(2)},				/* RGMII1_TCLK */
 	{OFFSET(mii1_rxclk), MODE(2) | RXACTIVE},	/* RGMII1_RCLK */
 	{OFFSET(mii1_rxd3), MODE(2) | RXACTIVE},	/* RGMII1_RD3 */
 	{OFFSET(mii1_rxd2), MODE(2) | RXACTIVE},	/* RGMII1_RD2 */
@@ -164,18 +117,18 @@ static struct module_pin_mux rgmii1_pin_mux[] = {
 };
 
 static struct module_pin_mux rgmii2_pin_mux[] = {
-	{OFFSET(gpmc_a0), MODE(2)},			/* RGMII1_TCTL */
-	{OFFSET(gpmc_a1), MODE(2) | RXACTIVE},	/* RGMII1_RCTL */
-	{OFFSET(gpmc_a2), MODE(2)},			/* RGMII1_TD3 */
-	{OFFSET(gpmc_a3), MODE(2)},			/* RGMII1_TD2 */
-	{OFFSET(gpmc_a4), MODE(2)},			/* RGMII1_TD1 */
-	{OFFSET(gpmc_a5), MODE(2)},			/* RGMII1_TD0 */
-	{OFFSET(gpmc_a6), MODE(2)},			/* RGMII1_TCLK */
-	{OFFSET(gpmc_a7), MODE(2) | RXACTIVE},	/* RGMII1_RCLK */
-	{OFFSET(gpmc_a8), MODE(2) | RXACTIVE},	/* RGMII1_RD3 */
-	{OFFSET(gpmc_a9), MODE(2) | RXACTIVE},	/* RGMII1_RD2 */
-	{OFFSET(gpmc_a10), MODE(2) | RXACTIVE},	/* RGMII1_RD1 */
-	{OFFSET(gpmc_a11), MODE(2) | RXACTIVE},	/* RGMII1_RD0 */
+	{OFFSET(gpmc_a0), MODE(2)},				/* RGMII2_TCTL */
+	{OFFSET(gpmc_a1), MODE(2) | RXACTIVE},	/* RGMII2_RCTL */
+	{OFFSET(gpmc_a2), MODE(2)},				/* RGMII2_TD3 */
+	{OFFSET(gpmc_a3), MODE(2)},				/* RGMII2_TD2 */
+	{OFFSET(gpmc_a4), MODE(2)},				/* RGMII2_TD1 */
+	{OFFSET(gpmc_a5), MODE(2)},				/* RGMII2_TD0 */
+	{OFFSET(gpmc_a6), MODE(2)},				/* RGMII2_TCLK */
+	{OFFSET(gpmc_a7), MODE(2) | RXACTIVE},	/* RGMII2_RCLK */
+	{OFFSET(gpmc_a8), MODE(2) | RXACTIVE},	/* RGMII2_RD3 */
+	{OFFSET(gpmc_a9), MODE(2) | RXACTIVE},	/* RGMII2_RD2 */
+	{OFFSET(gpmc_a10), MODE(2) | RXACTIVE},	/* RGMII2_RD1 */
+	{OFFSET(gpmc_a11), MODE(2) | RXACTIVE},	/* RGMII2_RD0 */
 	{-1},
 };
 
@@ -185,11 +138,6 @@ static struct module_pin_mux mdio_pin_mux[] = {
 	{-1},
 };
 
-
-static struct module_pin_mux pwm_pin_mux[] = {
-	{OFFSET(gpmc_a3), (MODE(6) | PULLUDDIS)},
-	{-1},
-};
 
 void enable_uart0_pin_mux(void)
 {
@@ -223,12 +171,7 @@ void enable_i2c0_pin_mux(void)
 	configure_module_pin_mux(i2c0_pin_mux);
 }
 
-void enable_shc_board_pwm_pin_mux(void)
-{
-	configure_module_pin_mux(pwm_pin_mux);
-}
-
-void enable_shc_board_pin_mux(void)
+void enable_fml80_board_pin_mux(void)
 {
 	/* Do board-specific muxes. */
 	if (board_is_fml80()) {
@@ -236,7 +179,6 @@ void enable_shc_board_pin_mux(void)
 		configure_module_pin_mux(mmc0_pin_mux);
 		configure_module_pin_mux(mmc1_pin_mux);
 		configure_module_pin_mux(i2c0_pin_mux);
-		configure_module_pin_mux(gpio0_7_pin_mux);
 		configure_module_pin_mux(gpio_pin_mux);
 		configure_module_pin_mux(uart1_pin_mux);
 		configure_module_pin_mux(uart2_pin_mux);

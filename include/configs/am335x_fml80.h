@@ -10,8 +10,10 @@
  * SPDX-License-Identifier:	GPL-2.0+
  */
 
-#ifndef __CONFIG_AM335X_SHC_H
-#define __CONFIG_AM335X_SHC_H
+#ifndef __CONFIG_AM335X_FML80_H
+#define __CONFIG_AM335X_FML80_H
+
+/*#define	DEBUG	1 */
 
 #include <configs/ti_am335x_common.h>
 
@@ -37,7 +39,7 @@
  * in case of SD Card or Network boot we want to have a possibility to
  * debrick the shc, therefore do not read environment from eMMC
  */
-#if defined(CONFIG_SHC_SDBOOT) || defined(CONFIG_SHC_NETBOOT)
+#if defined(CONFIG__SDBOOT) || defined(CONFIG_FML80_NETBOOT)
 #define CONFIG_SYS_MMC_ENV_DEV		0
 #else
 #define CONFIG_SYS_MMC_ENV_DEV		1
@@ -57,7 +59,7 @@
 #define CONFIG_ENV_OFFSET_REDUND    0x9000 /* 36 kB */
 #define CONFIG_ENV_SIZE_REDUND      CONFIG_ENV_SIZE
 
-#ifndef CONFIG_SHC_ICT
+#ifndef CONFIG__ICT
 /*
  * In builds other than ICT, reset to retry after timeout
  * Define a timeout after which a stopped bootloader continues autoboot
@@ -80,7 +82,9 @@
 	"bootfile=uImage\0" \
 	"fdtfile=am335x-shc.dtb\0" \
 	"verify=no\0" \
-	"serverip=10.55.152.184\0" \
+	"ipaddr=192.168.0.111\0"\
+	"netmask=255.255.255.0\0"\
+	"serverip=192.168.0.115\0" \
 	"rootpath=/srv/nfs/shc-rootfs\0" \
 	"console=ttyO0,115200n8\0" \
 	"optargs=quiet\0" \
@@ -167,9 +171,74 @@
 			"setenv mmcpart 5; " \
 		"fi; " \
 		"setenv mmcroot /dev/mmcblk${mmcdev}p${mmcpart};\0"
+#else
+#define CONFIG_EXTRA_ENV_SETTINGS \
+	"sarch=arm\0"\
+	"baudrate=115200\0"\
+	"board=fml80\0"\
+	"bootcmd=gpio set 53; i2c mw 0x24 1 0x3e; run findfdt; mmc dev 0; if mmc rescan ; then echo micro SD card found;setenv mmcdev 0;else echo No micro SD card found, setting mmcdev to 1;setenv mmcdev 1;fi;setenv bootpart ${mmcdev}:2;mmc dev ${mmcdev}; if mmc rescan; then gpio set 54; echo SD/MMC found on device ${mmcdev};if run loadbootenv; then echo Loaded environment from ${bootenv};run importbootenv;fi;if test -n $uenvcmd; then echo Running uenvcmd ...;run uenvcmd;fi;gpio set 55; if run loaduimage; then gpio set 56; run loadfdt;run mmcboot;fi;fi;\0"\
+	"bootdelay=1\0"\
+	"bootdir=/boot\0"\
+	"bootenv=uEnv.txt\0"\
+	"bootfile=uImage\0"\
+	"bootpart=0:2\0"\
+	"console=ttyO0,115200n8\0"\
+	"cpu=armv7\0"\
+	"dfu_alt_info_emmc=rawemmc mmc 0 3751936\0"\
+	"dfu_alt_info_mmc=boot part 0 1;rootfs part 0 2;MLO fat 0 1;MLO.raw mmc 100 100;u-boot.img.raw mmc 300 3C0;u-boot.img fat 0 1;uEnv.txt fat 0 1\0"\
+	"dfu_alt_info_nand=SPL part 0 1;SPL.backup1 part 0 2;SPL.backup2 part 0 3;SPL.backup3 part 0 4;u-boot part 0 5;kernel part 0 7;rootfs part 0 8\0"\
+	"ethact=cpsw\0"\
+	"ethaddr=98:84:e3:a7:7c:14\0"\
+	"fdt_high=0xffffffff\0"\
+	"fdtaddr=0x80F80000\0"\
+	"fdtfile=am335x-boneblack.dtb\0"\
+	"findfdt=if test $board_name = A33515BB; then setenv fdtfile am335x-evm.dtb; fi; if test $board_name = A335X_SK; then setenv fdtfile am335x-evmsk.dtb; fi;if test $board_name = A335BONE; then setenv fdtfile am335x-bone.dtb; fi; if test $board_name = A335BNLT; then setenv fdtfile am335x-boneblack.dtb; fi\0"\
+	"importbootenv=echo Importing environment from mmc ...; env import -t $loadaddr $filesize\0"\
+	"kloadaddr=0x80007fc0\0"\
+	"loadaddr=0x80200000\0"\
+	"loadbootenv=load mmc ${mmcdev} ${loadaddr} ${bootenv}\0"\
+	"loadfdt=load mmc ${bootpart} ${fdtaddr} ${bootdir}/${fdtfile}\0"\
+	"loadramdisk=load mmc ${mmcdev} ${rdaddr} ramdisk.gz\0"\
+	"loaduimage=load mmc ${bootpart} ${kloadaddr} ${bootdir}/${bootfile}\0"\
+	"mmcargs=setenv bootargs console=${console} ${optargs} root=${mmcroot} rootfstype=${mmcrootfstype}\0"\
+	"mmcboot=echo Booting from mmc ...; run mmcargs; bootm ${kloadaddr} - ${fdtaddr}\0"\
+	"mmcdev=0\0"\
+	"mmcroot=/dev/mmcblk0p2 ro\0"\
+	"mmcrootfstype=ext4 rootwait\0"\
+	"mtdids=nand0=omap2-nand.0\0"\
+	"mtdparts=mtdparts=omap2-nand.0:128k(SPL),128k(SPL.backup1),128k(SPL.backup2),128k(SPL.backup3),1920k(u-boot),128k(u-boot-env),5m(kernel),-(rootfs)\0"\
+	"nandargs=setenv bootargs console=${console} ${optargs} root=${nandroot} rootfstype=${nandrootfstype}\0"\
+	"nandboot=echo Booting from nand ...; run nandargs; nand read ${loadaddr} ${nandsrcaddr} ${nandimgsize}; bootm ${loadaddr}\0"\
+	"nandimgsize=0x500000\0"\
+	"nandroot=ubi0:rootfs rw ubi.mtd=7,2048\0"\
+	"nandrootfstype=ubifs rootwait=1\0"\
+	"nandsrcaddr=0x280000\0"\
+	"netargs=setenv bootargs console=${console} ${optargs} root=/dev/nfs nfsroot=${serverip}:${rootpath},${nfsopts} rw ip=dhcp\0"\
+	"netboot=echo Booting from network ...; setenv autoload no; dhcp; tftp ${loadaddr} ${bootfile}; tftp ${fdtaddr} ${fdtfile}; run netargs; bootm ${loadaddr} - ${fdtaddr}\0"\
+	"nfsopts=nolock\0"\
+	"ramargs=setenv bootargs console=${console} ${optargs} root=${ramroot} rootfstype=${ramrootfstype}\0"\
+	"ramboot=echo Booting from ramdisk ...; run ramargs; bootm ${loadaddr} ${rdaddr} ${fdtaddr}\0"\
+	"ramroot=/dev/ram0 rw ramdisk_size=65536 initrd=${rdaddr},64M\0"\
+	"ramrootfstype=ext2\0"\
+	"rdaddr=0x81000000\0"\
+	"rootpath=/export/rootfs\0"\
+	"soc=am33xx\0"\
+	"spiargs=setenv bootargs console=${console} ${optargs} root=${spiroot} rootfstype=${spirootfstype}\0"\
+	"spiboot=echo Booting from spi ...; run spiargs; sf probe ${spibusno}:0; sf read ${loadaddr} ${spisrcaddr} ${spiimgsize}; bootm ${loadaddr}\0"\
+	"spibusno=0\0"\
+	"spiimgsize=0x362000\0"\
+	"spiroot=/dev/mtdblock4 rw\0"\
+	"spirootfstype=jffs2\0"\
+	"spisrcaddr=0xe0000\0"\
+	"static_ip=${ipaddr}:${serverip}:${gatewayip}:${netmask}:${hostname}::off\0"\
+	"stderr=serial\0"\
+	"stdin=serial\0"\
+	"stdout=serial\0"\
+	"usbnet_devaddr=98:84:e3:a7:7c:14\0"\
+	"vendor=futuretek\0"
 #endif /* #ifndef CONFIG_SPL_BUILD */
 
-#if defined CONFIG_SHC_NETBOOT
+#if defined CONFIG__NETBOOT
 /* Network Boot */
 # define CONFIG_BOOTCOMMAND \
 	"run fusecmd; " \
@@ -180,7 +249,7 @@
 		"panic; " \
 	"fi; "
 
-#elif defined CONFIG_SHC_SDBOOT /* !defined CONFIG_SHC_NETBOOT */
+#elif defined CONFIG_FML80_SDBOOT /* !defined CONFIG_FML80_NETBOOT */
 /* SD-Card Boot */
 # define CONFIG_BOOTCOMMAND \
 	"if mmc dev 0; mmc rescan; then " \
@@ -197,7 +266,7 @@
 		"panic; " \
 	"fi; "
 
-#elif defined CONFIG_SHC_ICT
+#elif defined CONFIG_FML80_ICT
 /* ICT adapter boots only u-boot and does HW partitioning */
 # define CONFIG_BOOTCOMMAND \
 	"if mmc dev 0; mmc rescan; then " \
@@ -208,7 +277,7 @@
 	"fi; " \
 	"run fusecmd; "
 
-#else /* !defined CONFIG_SHC_NETBOOT, !defined CONFIG_SHC_SDBOOT */
+#else /* !defined CONFIG__NETBOOT, !defined CONFIG_FML80_SDBOOT */
 /* Regular Boot from internal eMMC */
 # define CONFIG_BOOTCOMMAND \
 	"if mmc dev 1; mmc rescan; then " \
@@ -258,7 +327,7 @@
 #define CONFIG_CMD_DHCP
 #define CONFIG_CMD_PING
 #define CONFIG_DRIVER_TI_CPSW
-#define CONFIG_MII
+#define CONFIG_RGMII
 #define CONFIG_BOOTP_DEFAULT
 #define CONFIG_BOOTP_DNS
 #define CONFIG_BOOTP_DNS2
@@ -266,7 +335,7 @@
 #define CONFIG_BOOTP_GATEWAY
 #define CONFIG_BOOTP_SUBNETMASK
 #define CONFIG_NET_RETRY_COUNT         10
-#define CONFIG_PHY_ADDR			0
+#define CONFIG_PHY_ADDR			1
 #define CONFIG_PHY_SMSC
 
 /* I2C configuration */
@@ -276,4 +345,4 @@
 #define CONFIG_SYS_I2C_SLAVE		1
 
 #define CONFIG_SHOW_BOOT_PROGRESS
-#endif	/* ! __CONFIG_AM335X_SHC_H */
+#endif	/* ! __CONFIG_AM335X__H */

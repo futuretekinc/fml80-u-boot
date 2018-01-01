@@ -104,7 +104,7 @@ static inline int board_is_fml80(void)
 *  --- Further values follow, not important for Bootloader ---
 */
 
-struct  shc_eeprom {
+struct  fml80_eeprom {
 	u32  magic;
 	u16  version;
 	u16  lenght;
@@ -112,7 +112,7 @@ struct  shc_eeprom {
 };
 
 void enable_uart0_pin_mux(void);
-void enable_shc_board_pin_mux(void);
-void enable_shc_board_pwm_pin_mux(void);
+void enable_fml80_board_pin_mux(void);
+void enable_fml80_board_pwm_pin_mux(void);
 
 #endif

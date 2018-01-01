@@ -43,8 +43,8 @@ DECLARE_GLOBAL_DATA_PTR;
 	(defined(CONFIG_DRIVER_TI_CPSW) && !defined(CONFIG_DM_ETH))
 static struct ctrl_dev *cdev = (struct ctrl_dev *)CTRL_DEVICE_BASE;
 #endif
-static struct shc_eeprom __attribute__((section(".data"))) header;
-static int shc_eeprom_valid;
+static struct fml80_eeprom __attribute__((section(".data"))) header;
+static int fml80_eeprom_valid;
 
 /*
  * Read header information from EEPROM into global structure.
@@ -70,36 +70,36 @@ static int read_eeprom(void)
 		return -EIO;
 	}
 
-	shc_eeprom_valid = 1;
+	fml80_eeprom_valid = 1;
 
 	return 0;
 }
 
-static void shc_request_gpio(void)
+static void fml80_request_gpio(void)
 {
-	gpio_request(LED_PWR_BL_GPIO, "LED PWR BL");
-	gpio_request(LED_PWR_RD_GPIO, "LED PWR RD");
-	gpio_request(RESET_GPIO, "reset");
-	gpio_request(WIFI_REGEN_GPIO, "WIFI REGEN");
-	gpio_request(WIFI_RST_GPIO, "WIFI rst");
-	gpio_request(ZIGBEE_RST_GPIO, "ZigBee rst");
-	gpio_request(BIDCOS_RST_GPIO, "BIDCOS rst");
-	gpio_request(ENOC_RST_GPIO, "ENOC rst");
-#if defined CONFIG_B_SAMPLE
-	gpio_request(LED_PWR_GN_GPIO, "LED PWR GN");
-	gpio_request(LED_CONN_BL_GPIO, "LED CONN BL");
-	gpio_request(LED_CONN_RD_GPIO, "LED CONN RD");
-	gpio_request(LED_CONN_GN_GPIO, "LED CONN GN");
-#else
-	gpio_request(LED_LAN_BL_GPIO, "LED LAN BL");
-	gpio_request(LED_LAN_RD_GPIO, "LED LAN RD");
-	gpio_request(LED_CLOUD_BL_GPIO, "LED CLOUD BL");
-	gpio_request(LED_CLOUD_RD_GPIO, "LED CLOUD RD");
-	gpio_request(LED_PWM_GPIO, "LED PWM");
-	gpio_request(Z_WAVE_RST_GPIO, "Z WAVE rst");
-#endif
-	gpio_request(BACK_BUTTON_GPIO, "Back button");
-	gpio_request(FRONT_BUTTON_GPIO, "Front button");
+//	gpio_request(LED_PWR_BL_GPIO, "LED PWR BL");
+//	gpio_request(LED_PWR_RD_GPIO, "LED PWR RD");
+//	gpio_request(RESET_GPIO, "reset");
+//	gpio_request(WIFI_REGEN_GPIO, "WIFI REGEN");
+//	gpio_request(WIFI_RST_GPIO, "WIFI rst");
+//	gpio_request(ZIGBEE_RST_GPIO, "ZigBee rst");
+//	gpio_request(BIDCOS_RST_GPIO, "BIDCOS rst");
+//	gpio_request(ENOC_RST_GPIO, "ENOC rst");
+//#if defined CONFIG_B_SAMPLE
+//	gpio_request(LED_PWR_GN_GPIO, "LED PWR GN");
+//	gpio_request(LED_CONN_BL_GPIO, "LED CONN BL");
+//	gpio_request(LED_CONN_RD_GPIO, "LED CONN RD");
+//	gpio_request(LED_CONN_GN_GPIO, "LED CONN GN");
+//#else
+//	gpio_request(LED_LAN_BL_GPIO, "LED LAN BL");
+//	gpio_request(LED_LAN_RD_GPIO, "LED LAN RD");
+//	gpio_request(LED_CLOUD_BL_GPIO, "LED CLOUD BL");
+//	gpio_request(LED_CLOUD_RD_GPIO, "LED CLOUD RD");
+//	gpio_request(LED_PWM_GPIO, "LED PWM");
+//	gpio_request(Z_WAVE_RST_GPIO, "Z WAVE rst");
+//#endif
+//	gpio_request(BACK_BUTTON_GPIO, "Back button");
+//	gpio_request(FRONT_BUTTON_GPIO, "Front button");
 }
 
 /*
@@ -109,7 +109,7 @@ static void shc_request_gpio(void)
 static void __maybe_unused force_modules_running(void)
 {
 	/* Wi-Fi power regulator enable - high = enabled */
-	gpio_direction_output(WIFI_REGEN_GPIO, 1);
+//	gpio_direction_output(WIFI_REGEN_GPIO, 1);
 	/*
 	 * Wait for Wi-Fi power regulator to reach a stable voltage
 	 * (soft-start time, max. 350 µs)
@@ -117,21 +117,21 @@ static void __maybe_unused force_modules_running(void)
 	__udelay(350);
 
 	/* Wi-Fi module reset - high = running */
-	gpio_direction_output(WIFI_RST_GPIO, 1);
+//	gpio_direction_output(WIFI_RST_GPIO, 1);
 
 	/* ZigBee reset - high = running */
-	gpio_direction_output(ZIGBEE_RST_GPIO, 1);
+//	gpio_direction_output(ZIGBEE_RST_GPIO, 1);
 
 	/* BidCos reset - high = running */
-	gpio_direction_output(BIDCOS_RST_GPIO, 1);
+//	gpio_direction_output(BIDCOS_RST_GPIO, 1);
 
 #if !defined(CONFIG_B_SAMPLE)
 	/* Z-Wave reset - high = running */
-	gpio_direction_output(Z_WAVE_RST_GPIO, 1);
+//	gpio_direction_output(Z_WAVE_RST_GPIO, 1);
 #endif
 
 	/* EnOcean reset - low = running */
-	gpio_direction_output(ENOC_RST_GPIO, 0);
+//	gpio_direction_output(ENOC_RST_GPIO, 0);
 }
 
 /*
@@ -141,24 +141,24 @@ static void __maybe_unused force_modules_running(void)
 static void __maybe_unused force_modules_reset(void)
 {
 	/* Wi-Fi module reset - low = reset */
-	gpio_direction_output(WIFI_RST_GPIO, 0);
+//	gpio_direction_output(WIFI_RST_GPIO, 0);
 
 	/* Wi-Fi power regulator enable - low = disabled */
-	gpio_direction_output(WIFI_REGEN_GPIO, 0);
+//	gpio_direction_output(WIFI_REGEN_GPIO, 0);
 
 	/* ZigBee reset - low = reset */
-	gpio_direction_output(ZIGBEE_RST_GPIO, 0);
+//	gpio_direction_output(ZIGBEE_RST_GPIO, 0);
 
 	/* BidCos reset - low = reset */
 	/*gpio_direction_output(BIDCOS_RST_GPIO, 0);*/
 
 #if !defined(CONFIG_B_SAMPLE)
 	/* Z-Wave reset - low = reset */
-	gpio_direction_output(Z_WAVE_RST_GPIO, 0);
+//	gpio_direction_output(Z_WAVE_RST_GPIO, 0);
 #endif
 
 	/* EnOcean reset - high = reset*/
-	gpio_direction_output(ENOC_RST_GPIO, 1);
+//	gpio_direction_output(ENOC_RST_GPIO, 1);
 }
 
 /*
@@ -169,16 +169,16 @@ static void __maybe_unused leds_set_booting(void)
 #if defined(CONFIG_B_SAMPLE)
 
 	/* Turn all red LEDs on */
-	gpio_direction_output(LED_PWR_RD_GPIO, 1);
-	gpio_direction_output(LED_CONN_RD_GPIO, 1);
+//	gpio_direction_output(LED_PWR_RD_GPIO, 1);
+//	gpio_direction_output(LED_CONN_RD_GPIO, 1);
 
 #else /* All other SHCs starting with B2-Sample */
 	/* Set the PWM GPIO */
-	gpio_direction_output(LED_PWM_GPIO, 1);
+//	gpio_direction_output(LED_PWM_GPIO, 1);
 	/* Turn all red LEDs on */
-	gpio_direction_output(LED_PWR_RD_GPIO, 1);
-	gpio_direction_output(LED_LAN_RD_GPIO, 1);
-	gpio_direction_output(LED_CLOUD_RD_GPIO, 1);
+//	gpio_direction_output(LED_PWR_RD_GPIO, 1);
+//	gpio_direction_output(LED_LAN_RD_GPIO, 1);
+//	gpio_direction_output(LED_CLOUD_RD_GPIO, 1);
 
 #endif
 }
@@ -222,39 +222,39 @@ static void leds_set_finish(void)
 {
 #if defined(CONFIG_B_SAMPLE)
 	/* Turn all LEDs off */
-	gpio_set_value(LED_PWR_BL_GPIO, 0);
-	gpio_set_value(LED_PWR_RD_GPIO, 0);
-	gpio_set_value(LED_PWR_GN_GPIO, 0);
-	gpio_set_value(LED_CONN_BL_GPIO, 0);
-	gpio_set_value(LED_CONN_RD_GPIO, 0);
-	gpio_set_value(LED_CONN_GN_GPIO, 0);
-#else /* All other SHCs starting with B2-Sample */
-	/* Turn all LEDs off */
-	gpio_set_value(LED_PWR_BL_GPIO, 0);
-	gpio_set_value(LED_PWR_RD_GPIO, 0);
-	gpio_set_value(LED_LAN_BL_GPIO, 0);
-	gpio_set_value(LED_LAN_RD_GPIO, 0);
-	gpio_set_value(LED_CLOUD_BL_GPIO, 0);
-	gpio_set_value(LED_CLOUD_RD_GPIO, 0);
-
-	/* Turn off the PWM GPIO and mux it to EHRPWM */
-	gpio_set_value(LED_PWM_GPIO, 0);
-	enable_shc_board_pwm_pin_mux();
+//	gpio_set_value(LED_PWR_BL_GPIO, 0);
+//	gpio_set_value(LED_PWR_RD_GPIO, 0);
+//	gpio_set_value(LED_PWR_GN_GPIO, 0);
+//	gpio_set_value(LED_CONN_BL_GPIO, 0);
+//	gpio_set_value(LED_CONN_RD_GPIO, 0);
+//	gpio_set_value(LED_CONN_GN_GPIO, 0);
+//#else /* All other SHCs starting with B2-Sample */
+//	/* Turn all LEDs off */
+//	gpio_set_value(LED_PWR_BL_GPIO, 0);
+//	gpio_set_value(LED_PWR_RD_GPIO, 0);
+//	gpio_set_value(LED_LAN_BL_GPIO, 0);
+//	gpio_set_value(LED_LAN_RD_GPIO, 0);
+//	gpio_set_value(LED_CLOUD_BL_GPIO, 0);
+//	gpio_set_value(LED_CLOUD_RD_GPIO, 0);
+//
+//	/* Turn off the PWM GPIO and mux it to EHRPWM */
+//	gpio_set_value(LED_PWM_GPIO, 0);
+//	enable_fml80_board_pwm_pin_mux();
 #endif
 }
 
-static void check_button_status(void)
-{
-	ulong value;
-	gpio_direction_input(FRONT_BUTTON_GPIO);
-	value = gpio_get_value(FRONT_BUTTON_GPIO);
-
-	if (value == 0) {
-		printf("front button activated !\n");
-		env_set("harakiri", "1");
-	}
-}
-
+//static void check_button_status(void)
+//{
+//	ulong value;
+//	gpio_direction_input(FRONT_BUTTON_GPIO);
+//	value = gpio_get_value(FRONT_BUTTON_GPIO);
+//
+//	if (value == 0) {
+//		printf("front button activated !\n");
+//		env_set("harakiri", "1");
+//	}
+//}
+//
 #ifndef CONFIG_SKIP_LOWLEVEL_INIT
 #ifdef CONFIG_SPL_OS_BOOT
 int spl_start_uboot(void)
@@ -263,9 +263,9 @@ int spl_start_uboot(void)
 }
 #endif
 
-static void shc_board_early_init(void)
+static void fml80_board_early_init(void)
 {
-	shc_request_gpio();
+	fml80_request_gpio();
 # ifdef CONFIG_SHC_ICT
 	/* Force all modules into enabled state for ICT testing */
 	force_modules_running();
@@ -274,6 +274,7 @@ static void shc_board_early_init(void)
 	force_modules_reset();
 # endif
 	leds_set_booting();
+	enable_fml80_board_pin_mux();
 }
 
 #define MPU_SPREADING_PERMILLE 18 /* Spread 1.8 percent */
@@ -283,12 +284,12 @@ static void shc_board_early_init(void)
 /* Bosch: Fref = 24 MHz / (N+1) = 24 MHz / 4 = 6 MHz */
 #define MPUPLL_FREF (OSC / (MPUPLL_N + 1))
 
-const struct dpll_params dpll_ddr_shc = {
+const struct dpll_params dpll_ddr_fml80 = {
 		400, OSC-1, 1, -1, -1, -1, -1};
 
 const struct dpll_params *get_dpll_ddr_params(void)
 {
-	return &dpll_ddr_shc;
+	return &dpll_ddr_fml80;
 }
 
 /*
@@ -302,7 +303,7 @@ const struct dpll_params *get_dpll_ddr_params(void)
  *   Overshoot: 10.7 MHz * 20 % = 2.2 MHz
  *   --> Fmax = 594 MHz + 2.2 MHz = 596.2 MHz, lower than 600 MHz --> OK!
  */
-const struct dpll_params dpll_mpu_shc_opp100 = {
+const struct dpll_params dpll_mpu_fml80_opp100 = {
 		99, MPUPLL_N, 1, -1, -1, -1, -1};
 
 void am33xx_spl_board_init(void)
@@ -361,8 +362,8 @@ void am33xx_spl_board_init(void)
 	/* Set MPU Frequency to what we detected */
 	printf("MPU reference clock runs at %d MHz\n", MPUPLL_FREF);
 	printf("Setting MPU clock to %d MHz\n", MPUPLL_FREF *
-	       dpll_mpu_shc_opp100.m);
-	do_setup_dpll(&dpll_mpu_regs, &dpll_mpu_shc_opp100);
+	       dpll_mpu_fml80_opp100.m);
+	do_setup_dpll(&dpll_mpu_regs, &dpll_mpu_fml80_opp100);
 
 	/* Enable Spread Spectrum for this freq to be clean on EMI side */
 	set_mpu_spreadspectrum(MPU_SPREADING_PERMILLE);
@@ -374,7 +375,7 @@ void am33xx_spl_board_init(void)
 	 * LDO1 = 1.8V (VIO and VRTC)
 	 * LDO2 = 3.3V (VDD_3V3AUX)
 	 */
-	shc_board_early_init();
+	fml80_board_early_init();
 }
 
 void set_uart_mux_conf(void)
@@ -384,7 +385,7 @@ void set_uart_mux_conf(void)
 
 void set_mux_conf_regs(void)
 {
-	enable_shc_board_pin_mux();
+	enable_fml80_board_pin_mux();
 }
 
 const struct ctrl_ioregs ioregs_evmsk = {
@@ -395,14 +396,14 @@ const struct ctrl_ioregs ioregs_evmsk = {
 	.dt1ioctl		= MT41K256M16HA125E_IOCTRL_VALUE,
 };
 
-static const struct ddr_data ddr3_shc_data = {
+static const struct ddr_data ddr3_fml80_data = {
 	.datardsratio0 = MT41K256M16HA125E_RD_DQS,
 	.datawdsratio0 = MT41K256M16HA125E_WR_DQS,
 	.datafwsratio0 = MT41K256M16HA125E_PHY_FIFO_WE,
 	.datawrsratio0 = MT41K256M16HA125E_PHY_WR_DATA,
 };
 
-static const struct cmd_control ddr3_shc_cmd_ctrl_data = {
+static const struct cmd_control ddr3_fml80_cmd_ctrl_data = {
 	.cmd0csratio = MT41K256M16HA125E_RATIO,
 	.cmd0iclkout = MT41K256M16HA125E_INVERT_CLKOUT,
 
@@ -413,7 +414,7 @@ static const struct cmd_control ddr3_shc_cmd_ctrl_data = {
 	.cmd2iclkout = MT41K256M16HA125E_INVERT_CLKOUT,
 };
 
-static struct emif_regs ddr3_shc_emif_reg_data = {
+static struct emif_regs ddr3_fml80_emif_reg_data = {
 	.sdram_config = MT41K256M16HA125E_EMIF_SDCFG,
 	.ref_ctrl = MT41K256M16HA125E_EMIF_SDREF,
 	.sdram_tim1 = MT41K256M16HA125E_EMIF_TIM1,
@@ -427,8 +428,8 @@ static struct emif_regs ddr3_shc_emif_reg_data = {
 void sdram_init(void)
 {
 	/* Configure the DDR3 RAM */
-	config_ddr(400, &ioregs_evmsk, &ddr3_shc_data,
-		   &ddr3_shc_cmd_ctrl_data, &ddr3_shc_emif_reg_data, 0);
+	config_ddr(400, &ioregs_evmsk, &ddr3_fml80_data,
+		   &ddr3_fml80_cmd_ctrl_data, &ddr3_fml80_emif_reg_data, 0);
 }
 #endif
 
@@ -448,7 +449,7 @@ int board_init(void)
 #if defined(CONFIG_NOR) || defined(CONFIG_NAND)
 	gpmc_init();
 #endif
-	shc_request_gpio();
+	fml80_request_gpio();
 
 	return 0;
 }
@@ -456,9 +457,9 @@ int board_init(void)
 #ifdef CONFIG_BOARD_LATE_INIT
 int board_late_init(void)
 {
-	check_button_status();
+//	check_button_status();
 #ifdef CONFIG_ENV_VARS_UBOOT_RUNTIME_CONFIG
-	if (shc_eeprom_valid)
+	if (fml80_eeprom_valid)
 		if (is_valid_ethaddr(header.mac_addr))
 			eth_env_set_enetaddr("ethaddr", header.mac_addr);
 #endif
@@ -481,12 +482,12 @@ static struct cpsw_slave_data cpsw_slaves[] = {
 	{
 		.slave_reg_ofs	= 0x208,
 		.sliver_reg_ofs	= 0xd80,
-		.phy_addr	= 0,
+		.phy_addr	= 1,
 	},
 	{
 		.slave_reg_ofs	= 0x308,
 		.sliver_reg_ofs	= 0xdc0,
-		.phy_addr	= 1,
+		.phy_addr	= 2,
 	},
 };
 
@@ -496,7 +497,7 @@ static struct cpsw_platform_data cpsw_data = {
 	.mdio_div		= 0xff,
 	.channels		= 8,
 	.cpdma_reg_ofs		= 0x800,
-	.slaves			= 1,
+	.slaves			= 2,
 	.slave_data		= cpsw_slaves,
 	.ale_reg_ofs		= 0xd00,
 	.ale_entries		= 1024,
@@ -559,7 +560,35 @@ int board_eth_init(bd_t *bis)
 	if (rv < 0)
 		printf("Error %d registering CPSW switch\n", rv);
 	else
+	{
 		n += rv;
+
+		const char*	devname = miiphy_get_current_dev();
+		if (devname != NULL)
+		{
+			unsigned short value;
+
+			miiphy_write (devname, 1, 0x1f, 0x0007);
+			miiphy_write (devname, 1, 0x1e, 0x002c);
+			miiphy_read	 (devname, 1, 0x1a, &value);
+			value &= ~0x0060;
+			miiphy_write (devname, 1, 0x1a, value);
+			miiphy_read	 (devname, 1, 0x1c, &value);
+			value &= ~0x0777;
+			miiphy_write (devname, 1, 0x1c, value);
+			miiphy_write (devname, 1, 0x31, 0x0000);
+
+			miiphy_write (devname, 2, 0x1f, 0x0007);
+			miiphy_write (devname, 2, 0x1e, 0x002c);
+			miiphy_read	 (devname, 2, 0x1a, &value);
+			value &= ~0x0060;
+			miiphy_write (devname, 2, 0x1a, value);
+			miiphy_read	 (devname, 2, 0x1c, &value);
+			value &= ~0x0777;
+			miiphy_write (devname, 2, 0x1c, value);
+			miiphy_write (devname, 2, 0x31, 0x0000);
+		}
+	}
 #endif
 
 #if defined(CONFIG_USB_ETHER) && \

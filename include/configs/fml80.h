@@ -258,7 +258,7 @@
 #define CONFIG_CMD_DHCP
 #define CONFIG_CMD_PING
 #define CONFIG_DRIVER_TI_CPSW
-#define CONFIG_MII
+#define CONFIG_RGMII
 #define CONFIG_BOOTP_DEFAULT
 #define CONFIG_BOOTP_DNS
 #define CONFIG_BOOTP_DNS2
@@ -266,7 +266,7 @@
 #define CONFIG_BOOTP_GATEWAY
 #define CONFIG_BOOTP_SUBNETMASK
 #define CONFIG_NET_RETRY_COUNT         10
-#define CONFIG_PHY_ADDR			0
+#define CONFIG_PHY_ADDR			1
 #define CONFIG_PHY_SMSC
 
 /* I2C configuration */
