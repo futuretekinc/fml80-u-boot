@@ -77,29 +77,12 @@ static int read_eeprom(void)
 
 static void fml80_request_gpio(void)
 {
-//	gpio_request(LED_PWR_BL_GPIO, "LED PWR BL");
-//	gpio_request(LED_PWR_RD_GPIO, "LED PWR RD");
-//	gpio_request(RESET_GPIO, "reset");
-//	gpio_request(WIFI_REGEN_GPIO, "WIFI REGEN");
-//	gpio_request(WIFI_RST_GPIO, "WIFI rst");
-//	gpio_request(ZIGBEE_RST_GPIO, "ZigBee rst");
-//	gpio_request(BIDCOS_RST_GPIO, "BIDCOS rst");
-//	gpio_request(ENOC_RST_GPIO, "ENOC rst");
-//#if defined CONFIG_B_SAMPLE
-//	gpio_request(LED_PWR_GN_GPIO, "LED PWR GN");
-//	gpio_request(LED_CONN_BL_GPIO, "LED CONN BL");
-//	gpio_request(LED_CONN_RD_GPIO, "LED CONN RD");
-//	gpio_request(LED_CONN_GN_GPIO, "LED CONN GN");
-//#else
-//	gpio_request(LED_LAN_BL_GPIO, "LED LAN BL");
-//	gpio_request(LED_LAN_RD_GPIO, "LED LAN RD");
-//	gpio_request(LED_CLOUD_BL_GPIO, "LED CLOUD BL");
-//	gpio_request(LED_CLOUD_RD_GPIO, "LED CLOUD RD");
-//	gpio_request(LED_PWM_GPIO, "LED PWM");
-//	gpio_request(Z_WAVE_RST_GPIO, "Z WAVE rst");
-//#endif
-//	gpio_request(BACK_BUTTON_GPIO, "Back button");
-//	gpio_request(FRONT_BUTTON_GPIO, "Front button");
+	gpio_request(LED2_GPIO, "LED2");
+	gpio_request(LED3_GPIO, "LED3");
+	gpio_request(LTE_STATE0_GPIO, "LTE STATE 0");
+	gpio_request(LTE_STATE1_GPIO, "LTE STATE 1");
+	gpio_request(LTE_RESET_GPIO, "LTE Reset");
+	gpio_request(W_DISABLE_GPIO, "W_DISABLE_N");
 }
 
 /*
@@ -108,30 +91,13 @@ static void fml80_request_gpio(void)
  */
 static void __maybe_unused force_modules_running(void)
 {
-	/* Wi-Fi power regulator enable - high = enabled */
-//	gpio_direction_output(WIFI_REGEN_GPIO, 1);
+	/* LTE module reset - high = enabled */
+	gpio_direction_output(LTE_RESET_GPIO, 1);
 	/*
 	 * Wait for Wi-Fi power regulator to reach a stable voltage
 	 * (soft-start time, max. 350 µs)
 	 */
 	__udelay(350);
-
-	/* Wi-Fi module reset - high = running */
-//	gpio_direction_output(WIFI_RST_GPIO, 1);
-
-	/* ZigBee reset - high = running */
-//	gpio_direction_output(ZIGBEE_RST_GPIO, 1);
-
-	/* BidCos reset - high = running */
-//	gpio_direction_output(BIDCOS_RST_GPIO, 1);
-
-#if !defined(CONFIG_B_SAMPLE)
-	/* Z-Wave reset - high = running */
-//	gpio_direction_output(Z_WAVE_RST_GPIO, 1);
-#endif
-
-	/* EnOcean reset - low = running */
-//	gpio_direction_output(ENOC_RST_GPIO, 0);
 }
 
 /*
@@ -140,25 +106,8 @@ static void __maybe_unused force_modules_running(void)
  */
 static void __maybe_unused force_modules_reset(void)
 {
-	/* Wi-Fi module reset - low = reset */
-//	gpio_direction_output(WIFI_RST_GPIO, 0);
-
-	/* Wi-Fi power regulator enable - low = disabled */
-//	gpio_direction_output(WIFI_REGEN_GPIO, 0);
-
-	/* ZigBee reset - low = reset */
-//	gpio_direction_output(ZIGBEE_RST_GPIO, 0);
-
-	/* BidCos reset - low = reset */
-	/*gpio_direction_output(BIDCOS_RST_GPIO, 0);*/
-
-#if !defined(CONFIG_B_SAMPLE)
-	/* Z-Wave reset - low = reset */
-//	gpio_direction_output(Z_WAVE_RST_GPIO, 0);
-#endif
-
-	/* EnOcean reset - high = reset*/
-//	gpio_direction_output(ENOC_RST_GPIO, 1);
+	/* LTE module reset - low = reset */
+	gpio_direction_output(LTE_RESET_GPIO, 0);
 }
 
 /*
@@ -166,21 +115,9 @@ static void __maybe_unused force_modules_reset(void)
  */
 static void __maybe_unused leds_set_booting(void)
 {
-#if defined(CONFIG_B_SAMPLE)
-
 	/* Turn all red LEDs on */
-//	gpio_direction_output(LED_PWR_RD_GPIO, 1);
-//	gpio_direction_output(LED_CONN_RD_GPIO, 1);
-
-#else /* All other SHCs starting with B2-Sample */
-	/* Set the PWM GPIO */
-//	gpio_direction_output(LED_PWM_GPIO, 1);
-	/* Turn all red LEDs on */
-//	gpio_direction_output(LED_PWR_RD_GPIO, 1);
-//	gpio_direction_output(LED_LAN_RD_GPIO, 1);
-//	gpio_direction_output(LED_CLOUD_RD_GPIO, 1);
-
-#endif
+	gpio_direction_output(LED2_GPIO, 1);
+	gpio_direction_output(LED3_GPIO, 1);
 }
 
 /*
@@ -188,31 +125,9 @@ static void __maybe_unused leds_set_booting(void)
  */
 static void leds_set_failure(int state)
 {
-#if defined(CONFIG_B_SAMPLE)
 	/* Turn all blue and green LEDs off */
-	gpio_set_value(LED_PWR_BL_GPIO, 0);
-	gpio_set_value(LED_PWR_GN_GPIO, 0);
-	gpio_set_value(LED_CONN_BL_GPIO, 0);
-	gpio_set_value(LED_CONN_GN_GPIO, 0);
-
-	/* Turn all red LEDs to 'state' */
-	gpio_set_value(LED_PWR_RD_GPIO, state);
-	gpio_set_value(LED_CONN_RD_GPIO, state);
-
-#else /* All other SHCs starting with B2-Sample */
-	/* Set the PWM GPIO */
-	gpio_direction_output(LED_PWM_GPIO, 1);
-
-	/* Turn all blue LEDs off */
-	gpio_set_value(LED_PWR_BL_GPIO, 0);
-	gpio_set_value(LED_LAN_BL_GPIO, 0);
-	gpio_set_value(LED_CLOUD_BL_GPIO, 0);
-
-	/* Turn all red LEDs to 'state' */
-	gpio_set_value(LED_PWR_RD_GPIO, state);
-	gpio_set_value(LED_LAN_RD_GPIO, state);
-	gpio_set_value(LED_CLOUD_RD_GPIO, state);
-#endif
+	gpio_set_value(LED2_GPIO, 0);
+	gpio_set_value(LED3_GPIO, 0);
 }
 
 /*
@@ -220,27 +135,9 @@ static void leds_set_failure(int state)
  */
 static void leds_set_finish(void)
 {
-#if defined(CONFIG_B_SAMPLE)
 	/* Turn all LEDs off */
-//	gpio_set_value(LED_PWR_BL_GPIO, 0);
-//	gpio_set_value(LED_PWR_RD_GPIO, 0);
-//	gpio_set_value(LED_PWR_GN_GPIO, 0);
-//	gpio_set_value(LED_CONN_BL_GPIO, 0);
-//	gpio_set_value(LED_CONN_RD_GPIO, 0);
-//	gpio_set_value(LED_CONN_GN_GPIO, 0);
-//#else /* All other SHCs starting with B2-Sample */
-//	/* Turn all LEDs off */
-//	gpio_set_value(LED_PWR_BL_GPIO, 0);
-//	gpio_set_value(LED_PWR_RD_GPIO, 0);
-//	gpio_set_value(LED_LAN_BL_GPIO, 0);
-//	gpio_set_value(LED_LAN_RD_GPIO, 0);
-//	gpio_set_value(LED_CLOUD_BL_GPIO, 0);
-//	gpio_set_value(LED_CLOUD_RD_GPIO, 0);
-//
-//	/* Turn off the PWM GPIO and mux it to EHRPWM */
-//	gpio_set_value(LED_PWM_GPIO, 0);
-//	enable_fml80_board_pwm_pin_mux();
-#endif
+	gpio_set_value(LED2_GPIO, 0);
+	gpio_set_value(LED3_GPIO, 0);
 }
 
 //static void check_button_status(void)
@@ -624,7 +521,7 @@ static void hang_bosch(const char *cause, int code)
 {
 	int lv;
 
-	gpio_direction_input(RESET_GPIO);
+//	gpio_direction_input(RESET_GPIO);
 
 	/* Enable reset pin interrupt on falling edge */
 	writel(RESET_MASK, GPIO1_BASE + OMAP_GPIO_IRQSTATUS_SET_0);

@@ -80,7 +80,7 @@
 	"fdt_high=0xffffffff\0" \
 	"rdaddr=0x81000000\0" \
 	"bootfile=uImage\0" \
-	"fdtfile=am335x-shc.dtb\0" \
+	"fdtfile=fml80.dtb\0" \
 	"verify=no\0" \
 	"ipaddr=192.168.0.111\0"\
 	"netmask=255.255.255.0\0"\
@@ -88,7 +88,7 @@
 	"rootpath=/srv/nfs/shc-rootfs\0" \
 	"console=ttyO0,115200n8\0" \
 	"optargs=quiet\0" \
-	"mmcdev=1\0" \
+	"mmcdev=0\0" \
 	"harakiri=0\0" \
 	"mmcpart=2\0" \
 	"active_root=root1\0" \
@@ -104,7 +104,7 @@
 	"mmcargs=run bootargs_defaults;" \
 		"setenv bootargs ${bootargs} " \
 		"root=${mmcroot} " \
-		"rootfstype=${mmcrootfstype} ip=${ip_method}\0" \
+		"rootfstype=${mmcrootfstype} rw ip=${ip_method}\0" \
 	"netargs=setenv bootargs console=${console} " \
 		"${optargs} " \
 		"root=/dev/nfs " \

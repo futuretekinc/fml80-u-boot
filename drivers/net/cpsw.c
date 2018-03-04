@@ -542,7 +542,6 @@ static int cpsw_mdio_read(struct mii_dev *bus, int phy_id,
 	reg = wait_for_user_access();
 
 	data = (reg & USERACCESS_ACK) ? (reg & USERACCESS_DATA) : -1;
-	printf("%s[%d] : %d\n", __func__, __LINE__, data);
 	return data;
 }
 

@@ -26,53 +26,18 @@ static inline int board_is_fml80(void)
 /*
  * Definitions for pinmuxing header and Board ID strings
  */
-#if defined(CONFIG_SHC_NETBOOT)
-# define BOARD_ID_STR "#### NETBOOT ####\nSHC C-Sample\n"
-#elif defined(CONFIG_SHC_SDBOOT)
-# define BOARD_ID_STR "#### SDBOOT ####\nSHC C-Sample\n"
-#else
-# define BOARD_ID_STR "SHC C-Sample\n"
-#endif
+#define BOARD_ID_STR "#### SDBOOT ####\nFutureTek FML80\n"
 
 /*
  * Definitions for GPIO pin assignments
  */
-#if defined CONFIG_B_SAMPLE
+# define LED2_GPIO   		GPIO_TO_PIN(1, 8)
+# define LED3_GPIO   		GPIO_TO_PIN(0, 7)
+# define LTE_STATE0_GPIO   	GPIO_TO_PIN(0, 4)
+# define LTE_STATE1_GPIO  	GPIO_TO_PIN(0, 5)
+# define LTE_RESET_GPIO 	GPIO_TO_PIN(0, 13)
+# define W_DISABLE_GPIO 	GPIO_TO_PIN(0, 12)
 
-# define LED_PWR_BL_GPIO   GPIO_TO_PIN(1, 17)
-# define LED_PWR_RD_GPIO   GPIO_TO_PIN(1, 18)
-# define LED_PWR_GN_GPIO   GPIO_TO_PIN(1, 19)
-# define LED_CONN_BL_GPIO  GPIO_TO_PIN(0, 26)
-# define LED_CONN_RD_GPIO  GPIO_TO_PIN(0, 22)
-# define LED_CONN_GN_GPIO  GPIO_TO_PIN(0, 23)
-# define RESET_GPIO        GPIO_TO_PIN(1, 29)
-# define WIFI_REGEN_GPIO   GPIO_TO_PIN(1, 16)
-# define WIFI_RST_GPIO     GPIO_TO_PIN(0, 27)
-# define ZIGBEE_RST_GPIO   GPIO_TO_PIN(3, 18)
-# define BIDCOS_RST_GPIO   GPIO_TO_PIN(0, 12)
-# define ENOC_RST_GPIO     GPIO_TO_PIN(1, 22)
-
-#else
-
-# define LED_PWR_BL_GPIO   GPIO_TO_PIN(0, 22)
-# define LED_PWR_RD_GPIO   GPIO_TO_PIN(0, 23)
-# define LED_LAN_BL_GPIO   GPIO_TO_PIN(1, 17)
-# define LED_LAN_RD_GPIO   GPIO_TO_PIN(0, 26)
-# define LED_CLOUD_BL_GPIO GPIO_TO_PIN(1, 18)
-# define LED_CLOUD_RD_GPIO GPIO_TO_PIN(2, 2)
-# define LED_PWM_GPIO      GPIO_TO_PIN(1, 19)
-# define RESET_GPIO        GPIO_TO_PIN(1, 29)
-# define WIFI_REGEN_GPIO   GPIO_TO_PIN(1, 16)
-# define WIFI_RST_GPIO     GPIO_TO_PIN(0, 27)
-# define ZIGBEE_RST_GPIO   GPIO_TO_PIN(3, 18)
-# define BIDCOS_RST_GPIO   GPIO_TO_PIN(1, 24)
-# define Z_WAVE_RST_GPIO   GPIO_TO_PIN(1, 21)
-# define ENOC_RST_GPIO     GPIO_TO_PIN(1, 22)
-
-#endif
-
-#define BACK_BUTTON_GPIO    GPIO_TO_PIN(1, 29)
-#define FRONT_BUTTON_GPIO   GPIO_TO_PIN(1, 25)
 
 /* Reset is on GPIO pin 29 of GPIO bank 1 */
 #define RESET_MASK	(0x1 << 29)
